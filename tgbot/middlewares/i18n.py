@@ -33,7 +33,7 @@ t_hub = TranslatorHub(
 )
 
 
-class L10nMiddleware(BaseMiddleware):
+class I18nMiddleware(BaseMiddleware):
     def __init__(self, t_hub: TranslatorHub):
         self.t_hub = t_hub
 
@@ -43,12 +43,11 @@ class L10nMiddleware(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ) -> Any:
-        user, created = await UserModel.get_or_create(tg_id=event.from_user.id)
 
-        data["i18n"] = self.t_hub.get_translator_by_locale(user.language)
+        data["i18n"] = self.t_hub.get_translator_by_locale(data["user"].language)
         data["t_hub"] = self.t_hub
         await handler(event, data)
 
 
-dp.message.middleware(L10nMiddleware(t_hub))
-dp.callback_query.middleware(L10nMiddleware(t_hub))
+dp.message.middleware(I18nMiddleware(t_hub))
+dp.callback_query.middleware(I18nMiddleware(t_hub))
