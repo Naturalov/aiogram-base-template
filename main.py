@@ -41,7 +41,7 @@ async def main():
     from tgbot import dp
 
     logging.getLogger('apscheduler.executors.default').setLevel(logging.WARNING)
-    logging.getLogger('aiogram.event').setLevel(logging.DEBUG)
+    logging.getLogger('aiogram.event').setLevel(logging.WARNING)
 
     await Tortoise.init({
         'connections': {
