@@ -6,7 +6,7 @@ from pydantic import BaseSettings, SecretStr, validator, BaseModel
 class Settings(BaseSettings):
     bot_token: Optional[str]
 
-    database_dsn: Optional[str] = "sqlite://db.sqlite"
+    DATABASE_DNS: Optional[str] = "sqlite://db.sqlite"
 
     #
     # @validator("fsm_mode")

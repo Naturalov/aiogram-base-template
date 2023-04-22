@@ -45,7 +45,7 @@ async def main():
 
     await Tortoise.init({
         'connections': {
-            'default': config.database_dsn
+            'default': config.DATABASE_DNS
         },
         "apps": {
             "models": {
