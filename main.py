@@ -6,6 +6,8 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 import betterlogging as bl
 
+from tortoise import Tortoise
+
 from aiogram.fsm.strategy import FSMStrategy
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler
 from aiohttp import web
@@ -30,7 +32,7 @@ bl.basic_colorized_config(level=log_level)
 
 async def main():
     logging.basicConfig(
-        level=logging.INFO,
+        level=log_level,
         format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
     )
 
@@ -39,11 +41,23 @@ async def main():
     from tgbot import dp
 
     logging.getLogger('apscheduler.executors.default').setLevel(logging.WARNING)
-    logging.getLogger('aiogram.event').setLevel(logging.WARNING)
+    logging.getLogger('aiogram.event').setLevel(logging.DEBUG)
+
+    await Tortoise.init({
+        'connections': {
+            'default': config.database_dsn
+        },
+        "apps": {
+            "models": {
+                "models": ["models"],
+                "default_connection": "default",
+            },
+        },
+    })
+    await Tortoise.generate_schemas()
 
     try:
-        await bot.delete_webhook()
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+        await dp.start_polling(bot)
     finally:
         await bot.session.close()
 

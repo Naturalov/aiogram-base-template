@@ -4,4 +4,5 @@ from aiogram.types import Message
 
 @router.message(CommandStart())
 async def fun(message: Message):
+    print(message)
     await message.reply("Вітаю!")

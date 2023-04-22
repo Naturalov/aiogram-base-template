@@ -1,1 +1,1 @@
-from .l10n import dp
+from .i18n import dp

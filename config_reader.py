@@ -3,34 +3,11 @@ from typing import Optional
 from pydantic import BaseSettings, SecretStr, validator, BaseModel
 
 
-# class Redis(BaseModel):
-#     host: str
-#     port: int = 6379
-#     db: int
-#     password: str = "IGivgFCKBmBmETW6cyoGQi7q0JQidBPgbrGSuoOQMGS86XEG8GnnS2811pn0DLoy"
-
-
 class Settings(BaseSettings):
     bot_token: Optional[str]
 
-    # webhook_domain: Optional[str]
-    # webhook_path: Optional[str]
-    #
-    # app_host: Optional[str] = "0.0.0.0"
-    # app_port: Optional[int] = 8444
-    #
-    # postgres_host: Optional[str]
-    # postgres_port: Optional[int]
-    # postgres_user: Optional[str]
-    # postgres_database: Optional[str]
-    # postgres_password: Optional[str]
-    #
-    # fsm_mode: str
-    #
-    # distribution_address: str
-    # distribution_private: str
-    #
-    # sharable_secret: Optional[str]
+    database_dsn: Optional[str] = "sqlite://db.sqlite"
+
     #
     # @validator("fsm_mode")
     # def fsm_type_check(cls, v):

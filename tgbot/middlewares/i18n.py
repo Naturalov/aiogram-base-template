@@ -10,6 +10,8 @@ from fluentogram import TranslatorHub, FluentTranslator
 
 from pathlib import Path
 
+from models import UserModel
+
 # Получение пути до каталога locales относительно текущего файла
 locales_dir = Path(__file__).parent.joinpath("..\\..\\locales")
 
@@ -41,13 +43,10 @@ class L10nMiddleware(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ) -> Any:
-        user: Optional[User] = types.User.get_current()
+        user, created = await UserModel.get_or_create(tg_id=event.from_user.id)
 
-        # if not get_lang_code:
-        #     get_lang_code = 'en'
-
-        # data["l10n"] = self.t_hub.get_translator_by_locale(get_lang_code)
-        # data["t_hub"] = self.t_hub
+        data["i18n"] = self.t_hub.get_translator_by_locale(user.language)
+        data["t_hub"] = self.t_hub
         await handler(event, data)
 
 
