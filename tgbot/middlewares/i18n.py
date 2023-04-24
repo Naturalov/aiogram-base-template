@@ -43,11 +43,10 @@ class I18nMiddleware(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ) -> Any:
-
         data["i18n"] = self.t_hub.get_translator_by_locale(data["user"].language)
         data["t_hub"] = self.t_hub
         await handler(event, data)
 
 
-dp.message.middleware(I18nMiddleware(t_hub))
-dp.callback_query.middleware(I18nMiddleware(t_hub))
+dp.message.outer_middleware(I18nMiddleware(t_hub))
+dp.callback_query.outer_middleware(I18nMiddleware(t_hub))

@@ -26,5 +26,5 @@ class DB(BaseMiddleware):
         await handler(event, data)
 
 
-dp.message.middleware(DB())
-dp.callback_query.middleware(DB())
+dp.message.outer_middleware(DB())
+dp.callback_query.outer_middleware(DB())
