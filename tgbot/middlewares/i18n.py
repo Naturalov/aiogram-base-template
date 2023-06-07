@@ -13,7 +13,8 @@ from pathlib import Path
 from models import UserModel
 
 # Получение пути до каталога locales относительно текущего файла
-locales_dir = Path(__file__).parent.joinpath("..\\..\\locales")
+locales_dir = Path(__file__).parent.joinpath("..//..//locales")
+print(locales_dir)
 
 # Подгружаем наши переводы из файлов.
 t_hub = TranslatorHub(
@@ -22,8 +23,8 @@ t_hub = TranslatorHub(
      "en": ("en",)},
     translators=[
         FluentTranslator(locale="en",
-                         translator=FluentBundle.from_files("en-US", filenames=[f'{str(locales_dir)}\\en'
-                                                                                f'\\strings.ftl'],
+                         translator=FluentBundle.from_files("en-US", filenames=[f'{str(locales_dir)}/en'
+                                                                                f'/strings.ftl'],
                                                             use_isolating=False)),
         FluentTranslator(locale="ru",
                          translator=FluentBundle.from_files("ru-RU", filenames=[f'{str(locales_dir)}/ru'
