@@ -1,1 +1,0 @@
-start-hello = Hello, { $username }

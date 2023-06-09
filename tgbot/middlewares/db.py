@@ -1,11 +1,11 @@
 from main import dp
 
-from typing import Callable, Dict, Any, Awaitable, Optional
+from typing import Callable, Dict, Any, Awaitable
 
-from aiogram import BaseMiddleware, types
+from aiogram import BaseMiddleware
 from aiogram.types import Message
 
-from models import UserModel
+from database.models import user
 
 
 

@@ -1,37 +1,17 @@
 from main import dp
 
-from typing import Callable, Dict, Any, Awaitable, Optional
+from typing import Callable, Dict, Any, Awaitable
 
-from aiogram import BaseMiddleware, types
-from aiogram.types import Message, User
+from aiogram import BaseMiddleware
+from aiogram.types import Message
 
-from fluent_compiler.bundle import FluentBundle
-from fluentogram import TranslatorHub, FluentTranslator
+from fluentogram import TranslatorHub
 
-from pathlib import Path
+from ..utils import create_translator_hub_from_directory
 
-from models import UserModel
-
-# Получение пути до каталога locales относительно текущего файла
-locales_dir = Path(__file__).parent.joinpath("..//..//locales")
-print(locales_dir)
 
 # Подгружаем наши переводы из файлов.
-t_hub = TranslatorHub(
-    {"ua": ("ua", "ru", "en"),
-     "ru": ("ru", "en"),
-     "en": ("en",)},
-    translators=[
-        FluentTranslator(locale="en",
-                         translator=FluentBundle.from_files("en-US", filenames=[f'{str(locales_dir)}/en'
-                                                                                f'/strings.ftl'],
-                                                            use_isolating=False)),
-        FluentTranslator(locale="ru",
-                         translator=FluentBundle.from_files("ru-RU", filenames=[f'{str(locales_dir)}/ru'
-                                                                                f'/strings.ftl'],
-                                                            use_isolating=False))],
-    root_locale="en",
-)
+t_hub = create_translator_hub_from_directory('locales', 'ru')
 
 
 class I18nMiddleware(BaseMiddleware):
@@ -44,7 +24,7 @@ class I18nMiddleware(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ) -> Any:
-        data["i18n"] = self.t_hub.get_translator_by_locale(data["user"].language)
+        data["i18n"] = self.t_hub.get_translator_by_locale(event.from_user.language_code)
         data["t_hub"] = self.t_hub
         await handler(event, data)
 

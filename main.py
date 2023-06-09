@@ -10,7 +10,6 @@ from tortoise import Tortoise
 
 from aiogram.fsm.strategy import FSMStrategy
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler
-from aiohttp import web
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from commands import set_bot_commands
@@ -49,7 +48,7 @@ async def main():
         },
         "apps": {
             "models": {
-                "models": ["models"],
+                "models": ["database.models"],
                 "default_connection": "default",
             },
         },
