@@ -22,12 +22,27 @@ class UserService:
     async def construct_schema_by_model(
             user: models.User) -> schemas.User:
         return schemas.User(tg_id=user.tg_id,
-                            username=user.username)
+                            username=user.username,
+                            permission=user.permission)
 
     async def get(self,
                   tg_id: int | None = None):
         user = await self._user_repository.get(tg_id=tg_id)
         if not user:
             raise UserNotFound()
+
+        return await self.construct_schema_by_model(user=user)
+
+    async def get_or_create(self,
+                            tg_id: int | None = None):
+        user = await self._user_repository.get_or_create(tg_id=tg_id)
+
+        return await self.construct_schema_by_model(user=user)
+
+    async def update_username(self,
+                              tg_id: int,
+                              username: str):
+        user = await self._user_repository.update_username(tg_id=tg_id,
+                                                           username=username)
 
         return await self.construct_schema_by_model(user=user)

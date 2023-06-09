@@ -1,3 +1,5 @@
+from database.dependency.services import user_service
+from database.services.user_service import UserService
 from main import dp
 
 from typing import Callable, Dict, Any, Awaitable
@@ -6,7 +8,6 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 
 from database.models import user
-
 
 
 class DB(BaseMiddleware):
@@ -19,12 +20,8 @@ class DB(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ) -> Any:
-        user, created = await UserModel.get_or_create(tg_id=event.from_user.id)
-
-        data["user"] = user
+        await user_service.update_username(tg_id=event.from_user.id,
+                                           username=event.from_user.username)
+        data["user_service"] = user_service
 
         await handler(event, data)
-
-
-dp.message.outer_middleware(DB())
-dp.callback_query.outer_middleware(DB())

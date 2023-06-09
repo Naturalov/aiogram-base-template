@@ -7,7 +7,7 @@ from tortoise.manager import Manager
 
 class PermissionEnum(IntFlag):
     user = auto()
-    accepted = auto()
+    worker = auto()
     moder = auto()
     admin = auto()
 

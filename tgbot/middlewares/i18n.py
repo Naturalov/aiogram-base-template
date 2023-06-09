@@ -9,7 +9,6 @@ from fluentogram import TranslatorHub
 
 from ..utils import create_translator_hub_from_directory
 
-
 # Подгружаем наши переводы из файлов.
 t_hub = create_translator_hub_from_directory('locales', 'ru')
 
@@ -27,7 +26,3 @@ class I18nMiddleware(BaseMiddleware):
         data["i18n"] = self.t_hub.get_translator_by_locale(event.from_user.language_code)
         data["t_hub"] = self.t_hub
         await handler(event, data)
-
-
-dp.message.outer_middleware(I18nMiddleware(t_hub))
-dp.callback_query.outer_middleware(I18nMiddleware(t_hub))
